@@ -4,6 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="theme-color" content="#FEF7FF" id="metaTheme">
+<meta name="application-name" content="Simulados ACS">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Simulados ACS">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
 <meta name="description" content="Simulados IBGE — Agente Censitário Supervisor (ACS), banca IBFC: 6 provas de 60 questões com correção comentada, revisão inteligente, flashcards e estatísticas.">
 <title>Simulados IBGE — ACS (IBFC)</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -82,17 +87,6 @@ button{touch-action:manipulation;-webkit-tap-highlight-color:transparent;font-fa
 #topbar .brand h1{font-size:.92rem;font-weight:700;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #topbar .brand small{display:block;font-size:.66rem;color:var(--on-surface-var);font-weight:500}
 #topbar .appbar-actions{margin-left:auto;display:flex;gap:8px}
-#btnMenu{display:none}
-
-/* ============ GAVETA DE NAVEGAÇÃO (menu lateral, telas menores) ============ */
-#drawerScrim{position:fixed;inset:0;background:rgba(0,0,0,.5);backdrop-filter:blur(2px);z-index:140;opacity:0;transition:opacity .26s var(--ease-std)}
-#drawerScrim.show{opacity:1}
-#drawer{position:fixed;top:0;bottom:0;left:0;width:min(84vw,320px);z-index:150;background:var(--surface-c);border-right:1px solid var(--outline-var);transform:translateX(-102%);transition:transform .3s var(--ease-std);display:flex;flex-direction:column;padding:14px 12px calc(14px + env(safe-area-inset-bottom));box-shadow:var(--shadow-lg);overflow-y:auto;overscroll-behavior:contain}
-#drawer.open{transform:none}
-#drawer .brand{display:flex;align-items:center;gap:12px;padding:8px 10px 18px}
-#drawer .dnav{display:flex;flex-direction:column;gap:6px}
-#drawer .dfoot{margin-top:auto;display:flex;flex-direction:column;gap:8px;padding:12px 6px 0;border-top:1px solid var(--outline-var)}
-#drawer .ver{font-size:.66rem;color:var(--on-surface-var);padding:4px 12px}
 
 /* ============ BOTÃO FLUTUANTE VOLTAR AO TOPO ============ */
 #fabTop{position:fixed;right:18px;bottom:calc(var(--nav-h) + 24px + env(safe-area-inset-bottom));z-index:90;width:52px;height:52px;border-radius:18px 18px 18px 30px;background:var(--primary);color:var(--on-primary);border:none;box-shadow:var(--shadow-lg);cursor:pointer;display:flex;align-items:center;justify-content:center;transform:translateY(96px);opacity:0;transition:transform .32s var(--ease-spring),opacity .25s;pointer-events:none}
@@ -122,14 +116,16 @@ footer{text-align:center;padding:22px;font-size:.74rem;color:var(--on-surface-va
   #rail{display:none}
   #bottomnav{display:flex}
   #topbar{display:flex}
-  #btnMenu{display:flex}
   main{padding:20px 14px calc(var(--nav-h) + 40px + env(safe-area-inset-bottom))}
+  /* rodapé precisa de respiro para não ficar atrás da navegação inferior fixa */
+  footer{padding-bottom:calc(var(--nav-h) + 46px + env(safe-area-inset-bottom))}
 }
 @media (min-width:600px){
   .bn-item span.lbl{opacity:1;transform:none}
 }
 body.in-session #rail,body.in-session #bottomnav,body.in-session #topbar{display:none}
 body.in-session main{padding-bottom:46px}
+body.in-session footer{padding-bottom:22px}
 @media (max-width:879px){body.in-session main{padding-bottom:20px}}
 
 /* ============ RIPPLE ============ */
@@ -574,7 +570,7 @@ html.touch .dlg.dragging{animation:none}
   *,*::before,*::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
   html{scroll-behavior:auto}
 }
-@media print{#rail,#bottomnav,#topbar,#touchBar,#toastHost,#drawer,#drawerScrim,#fabTop{display:none!important}}
+@media print{#rail,#bottomnav,#topbar,#touchBar,#toastHost,#fabTop{display:none!important}}
 
 </style>
 </head>
@@ -592,12 +588,11 @@ html.touch .dlg.dragging{animation:none}
     <button class="navitem" data-nav="settings" id="navSettings"></button>
     <div class="rail-foot">
       <button class="icon-btn" id="btnThemeRail" title="Alternar tema claro/escuro" aria-label="Alternar tema"></button>
-      <div class="ver">v3.2 • 360 questões</div>
+      <div class="ver">v3.3 • 360 questões</div>
     </div>
   </nav>
   <div id="content">
     <header id="topbar">
-      <button class="icon-btn" id="btnMenu" title="Abrir menu de navegação" aria-label="Abrir menu" aria-expanded="false" aria-controls="drawer"></button>
       <div class="brand">
         <div class="brand-logo">IBGE</div>
         <div><h1>Simulados — ACS</h1><small>Banca IBFC • Censo Agropecuário</small></div>
@@ -620,18 +615,6 @@ html.touch .dlg.dragging{animation:none}
   </div>
 </div>
 <nav id="bottomnav" aria-label="Navegação principal"></nav>
-<div id="drawerScrim" class="hidden"></div>
-<nav id="drawer" aria-label="Menu de navegação">
-  <div class="brand">
-    <div class="brand-logo">IBGE</div>
-    <div><h1>Simulados ACS</h1><small>Banca IBFC • Censo Agropecuário</small></div>
-  </div>
-  <div class="dnav" id="drawerNav"></div>
-  <div class="dfoot">
-    <button class="icon-btn" id="btnThemeDrawer" title="Alternar tema claro/escuro" aria-label="Alternar tema"></button>
-    <div class="ver">v3.2 • 360 questões</div>
-  </div>
-</nav>
 <button id="fabTop" aria-label="Voltar ao topo" title="Voltar ao topo"></button>
 <div id="toastHost" aria-live="polite"></div>
 <div id="dlgHost"></div>
@@ -1094,14 +1077,15 @@ shuffle:'<path d="M16 3h5v5"/><path d="M4 20 21 3"/><path d="M21 16v5h-5"/><path
 eye:'<path d="M2 12s3.5-7 10-7 10 7 10 7-3.5 7-10 7-10-7-10-7z"/><circle cx="12" cy="12" r="3"/>',
 book:'<path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z"/>',
 bulb:'<path d="M9 18h6"/><path d="M10 22h4"/><path d="M12 2a7 7 0 0 0-4 12.7c.6.5 1 1.4 1 2.3h6c0-.9.4-1.8 1-2.3A7 7 0 0 0 12 2z"/>',
-grad:'<path d="m2 9 10-5 10 5-10 5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>'
+grad:'<path d="m2 9 10-5 10 5-10 5z"/><path d="M6 12v5c0 1.5 3 3 6 3s6-1.5 6-3v-5"/>',
+install:'<rect x="6.5" y="2" width="11" height="19" rx="2.5"/><path d="M11 18.5h2"/><path d="M12 6v7.5"/><path d="m9.2 10.8 2.8 2.7 2.8-2.7"/>'
 };
 function icon(n,s){s=s||22;return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">'+(ICONS[n]||'')+'</svg>';}
 
 /* ============ CONSTANTES E ESTADO ============ */
 const STORE_KEY='ibgeAcsSimuladosV1',THEME_KEY='ibgeAcsTheme';
 const EXAM_SECONDS=4*3600; /* 4 horas — duração oficial da prova objetiva (edital IBFC) */
-const APP_VER='3.2';
+const APP_VER='3.3';
 const N_SIMS=6; /* número de cadernos de simulado */
 const N_TOTAL=N_SIMS*60; /* 360 questões */
 const MATERIAS=[[15,'Língua Portuguesa','chip-port','book'],[25,'Raciocínio Lógico','chip-rlq','target'],[45,'Administração','chip-adm','layers'],[60,'Conhecimentos Técnicos','chip-tech','grad']];
@@ -1153,7 +1137,7 @@ function applyTheme(){
   const t=resolveTheme();
   document.documentElement.setAttribute('data-theme',t);
   const ic=icon(t==='dark'?'sun':'moon',20);
-  ['btnThemeRail','btnThemeTop','btnThemeDrawer'].forEach(id=>{const b=$(id);if(b)b.innerHTML=ic;});
+  ['btnThemeRail','btnThemeTop'].forEach(id=>{const b=$(id);if(b)b.innerHTML=ic;});
   const mt=$('metaTheme');if(mt)mt.setAttribute('content',t==='dark'?'#141218':'#FEF7FF');
   refreshWavyColors();
 }
@@ -1380,6 +1364,94 @@ function countAnswered(sim){let c=0;for(let n=1;n<=60;n++)if(state.ans[sim+'-'+n
 function allSimuladosDone(){for(let s=1;s<=N_SIMS;s++){const st=statsFor(s);if(!(state.fins[s]||st.a===60))return false;}return true;}
 const MODE_DESC={estudo:'Feedback imediato: cada resposta é comentada na hora. Ideal para aprender o conteúdo.',simulado:'Prova fiel: cronômetro de 4h, sem feedback durante a prova. A correção comentada aparece apenas ao finalizar o caderno.'};
 
+/* ============ PWA — CRIAR APLICATIVO (instalação) ============ */
+/* Gera manifest + ícones dinamicamente (canvas → PNG) e aproveita o
+   beforeinstallprompt dos navegadores que suportam instalação de PWA. */
+const PWA={
+  evt:null,installed:false,manifestIn:false,
+  isStandalone(){return !!(window.matchMedia&&(window.matchMedia('(display-mode: standalone)').matches||window.matchMedia('(display-mode: fullscreen)').matches))||window.navigator.standalone===true;},
+  secure(){return location.protocol==='https:'||location.hostname==='localhost'||location.hostname==='127.0.0.1';},
+  makeIcon(size,maskable){
+    const cv=document.createElement('canvas');cv.width=cv.height=size;
+    const x=cv.getContext('2d');
+    const pal=PALS.find(p=>p[0]===state.set.pal)||PALS[0];
+    const g=x.createLinearGradient(0,0,size,size);
+    g.addColorStop(0,pal[2]);g.addColorStop(1,pal[3]);
+    if(maskable){x.fillStyle=g;x.fillRect(0,0,size,size);}
+    else{
+      const r=size*.235;
+      x.beginPath();
+      if(x.roundRect)x.roundRect(0,0,size,size,r);
+      else{x.moveTo(r,0);x.arcTo(size,0,size,size,r);x.arcTo(size,size,0,size,r);x.arcTo(0,size,0,0,r);x.arcTo(0,0,size,0,r);x.closePath();}
+      x.fillStyle=g;x.fill();
+    }
+    x.fillStyle='#fff';
+    x.font='800 '+Math.round(size*(maskable?.28:.34))+'px Roboto,Arial,Helvetica,sans-serif';
+    x.textAlign='center';x.textBaseline='middle';
+    x.fillText('ACS',size/2,size/2+size*.02);
+    return cv.toDataURL('image/png');
+  },
+  injectManifest(){
+    if(this.manifestIn)return;
+    try{
+      const dark=resolveTheme()==='dark';
+      const mf={name:'Simulados IBGE — ACS (IBFC)',short_name:'Simulados ACS',
+        description:'Simulados do cargo de Agente Censitário Supervisor (ACS) — banca IBFC: 6 provas de 60 questões com correção comentada, revisão inteligente, flashcards e estatísticas.',
+        lang:'pt-BR',dir:'ltr',start_url:location.href,display:'standalone',display_override:['standalone','minimal-ui'],orientation:'any',
+        background_color:dark?'#141218':'#FEF7FF',theme_color:dark?'#141218':'#FEF7FF',
+        icons:[{src:this.makeIcon(192,false),sizes:'192x192',type:'image/png',purpose:'any'},
+               {src:this.makeIcon(512,false),sizes:'512x512',type:'image/png',purpose:'any'},
+               {src:this.makeIcon(512,true),sizes:'512x512',type:'image/png',purpose:'maskable'}]};
+      const blob=new Blob([JSON.stringify(mf)],{type:'application/manifest+json'});
+      let link=document.querySelector('link[rel="manifest"]');
+      if(!link){link=document.createElement('link');link.rel='manifest';document.head.appendChild(link);}
+      link.href=URL.createObjectURL(blob);
+      this.manifestIn=true;
+    }catch(e){}
+  },
+  init(){
+    this.installed=this.isStandalone();
+    window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();this.evt=e;this.updateCard();});
+    window.addEventListener('appinstalled',()=>{
+      this.evt=null;this.installed=true;this.updateCard();
+      if(!inExamNow()){toast('Aplicativo instalado! Procure o ícone na tela inicial.','sparkle');SFX.finish();vib([30,40,30]);}
+    });
+    this.injectManifest();
+  },
+  install(){
+    const e=this.evt;if(!e)return;
+    this.evt=null;
+    try{e.prompt();if(e.userChoice)e.userChoice.catch(function(){});}catch(e2){}
+    this.updateCard();
+  },
+  status(){
+    if(this.installed)return{st:'ok',txt:'Já instalado — você está usando o aplicativo agora.'};
+    if(this.evt)return{st:'ready',txt:'Tudo pronto: instale com um toque.'};
+    if('onbeforeinstallprompt' in window){
+      if(!this.secure())return{st:'host',txt:'Arquivo aberto direto do armazenamento — a instalação exige HTTPS.'};
+      return{st:'wait',txt:'Disponível neste navegador — se o botão não ativar, use o menu ⋮.'};
+    }
+    return{st:'manual',txt:'Sem instalação automática neste navegador — dá para adicionar pelo menu.'};
+  },
+  cardHTML(){
+    const s=this.status();
+    const btn=s.st==='ready'?'<button class="btn btn-filled btn-sm" id="pwaInstall">'+icon('install',16)+' Instalar aplicativo</button>':'';
+    let msg='';
+    if(s.st==='ok')msg='Este app já roda em janela própria, sem a barra do navegador, e mantém todo o progresso salvo neste dispositivo.';
+    else if(s.st==='ready')msg='A instalação adiciona o <b>Simulados ACS</b> à tela inicial: abre em janela independente, em tela cheia, e mantém todo o progresso atual.';
+    else if(s.st==='host')msg='Os navegadores só permitem instalar páginas abertas por <b>HTTPS</b>. Hospede este arquivo em um serviço gratuito (GitHub Pages, Netlify…) e abra o endereço gerado — o botão de instalação ficará ativo. Para levar seu progresso, use <b>Exportar/Importar</b> acima.';
+    else if(s.st==='wait')msg='A instalação foi habilitada, mas o atalho ainda não foi liberado. Abra o menu do navegador (⋮) e toque em <b>“Instalar aplicativo”</b> ou “Adicionar à tela inicial”.';
+    else msg='Neste navegador, abra o menu (⋮ ou Compartilhar) e escolha <b>“Adicionar à tela inicial”</b>: o app ganha ícone próprio e abre em tela cheia, como um aplicativo comum.';
+    return '<div class="setrow"><div class="sr-txt"><b>Instalar na tela inicial (PWA)</b><small>'+s.txt+'</small></div>'+btn+'</div><div class="msg" style="margin:0">'+msg+'</div>';
+  },
+  bindCard(){const b=$('pwaInstall');if(b)b.onclick=()=>{SFX.tap();PWA.install();};},
+  updateCard(){
+    if(ui.screen!=='settings')return;
+    const c=$('pwaBody');
+    if(c){c.innerHTML=this.cardHTML();this.bindCard();}
+  }
+};
+
 
 /* ============ NAVEGAÇÃO E SHELL ============ */
 const NAV_ITEMS=[['home','Início','home'],['practice','Praticar','play'],['review','Revisar','refresh'],['stats','Evolução','chart'],['settings','Ajustes','sliders']];
@@ -1395,35 +1467,9 @@ function buildChrome(){
   bn.querySelectorAll('.bn-item').forEach(b=>b.onclick=()=>{SFX.tap();vib(8);goScreen(b.dataset.nav);});
   $('btnThemeRail').onclick=cycleTheme;
   $('btnThemeTop').onclick=cycleTheme;
-  const tb=$('btnThemeDrawer');if(tb)tb.onclick=cycleTheme;
-  const bm=$('btnMenu');
-  if(bm){bm.innerHTML=icon('menu',20);bm.onclick=()=>{if($('drawer').classList.contains('open'))hideDrawer();else showDrawer();};}
-  const dn=$('drawerNav');
-  if(dn){
-    dn.innerHTML=NAV_ITEMS.map(it=>'<button class="navitem" data-nav="'+it[0]+'">'+icon(it[2],21)+'<span>'+it[1]+'</span></button>').join('');
-    dn.querySelectorAll('.navitem').forEach(b=>b.onclick=()=>{hideDrawer();SFX.tap();vib(8);goScreen(b.dataset.nav);});
-  }
-  $('drawerScrim').onclick=hideDrawer;
   const fb=$('fabTop');if(fb)fb.innerHTML=icon('up',24);
 }
-function showDrawer(){
-  const d=$('drawer');if(!d||d.classList.contains('open'))return;
-  d.classList.add('open');
-  const sc=$('drawerScrim');sc.classList.remove('hidden');
-  requestAnimationFrame(()=>sc.classList.add('show'));
-  const bm=$('btnMenu');if(bm){bm.setAttribute('aria-expanded','true');bm.innerHTML=icon('close',20);}
-  vib(8);SFX.tap();
-  const f=$('drawerNav').querySelector('.navitem');if(f)f.focus({preventScroll:true});
-}
-function hideDrawer(){
-  const d=$('drawer');if(!d||!d.classList.contains('open'))return;
-  d.classList.remove('open');
-  const sc=$('drawerScrim');sc.classList.remove('show');
-  setTimeout(()=>{if(!$('drawer').classList.contains('open'))sc.classList.add('hidden');},280);
-  const bm=$('btnMenu');if(bm){bm.setAttribute('aria-expanded','false');bm.innerHTML=icon('menu',20);}
-}
 function goScreen(id){
-  hideDrawer();
   stopTimer();
   stopStudyTick();
   session=null;
@@ -1829,6 +1875,12 @@ function renderSettings(){
     +'<button class="btn btn-outline btn-sm" id="setClearSims">Respostas dos simulados</button><button class="btn btn-outline btn-sm" id="setClearRev">Estatísticas de revisão</button><button class="btn btn-outline btn-sm" id="setClearFav">Favoritas e notas</button><button class="btn btn-outline btn-sm" id="setClearGame">Progresso e conquistas</button></div>'
     +'<div class="setrow"><div class="sr-txt"><b>Resetar tudo</b><small>Volta o aplicativo ao estado inicial (a aparência é mantida)</small></div><button class="btn btn-danger btn-sm" id="setResetAll">'+icon('trash',16)+' Apagar tudo</button></div>'
     +'</div>'
+    +'<div class="card" style="margin-bottom:18px"><h3>'+icon('install',18)+' Criar aplicativo</h3><div id="pwaBody">'+PWA.cardHTML()+'</div></div>'
+    +'<div class="card"><h3>'+icon('info',18)+' Sobre</h3>'
+    +'<div class="msg" style="margin:0 0 10px">Simulados IBGE — Agente Censitário Supervisor (ACS) • Banca IBFC • Censo Agropecuário, Florestal e Aquícola.</div>'
+    +'<div class="msg" style="margin:0 0 10px">Versão '+APP_VER+' • '+N_SIMS+' simulados × 60 questões ('+N_TOTAL+' no total: 15 Português • 10 Raciocínio Lógico • 20 Administração • 15 Técnicas por caderno) • prova de 4 horas.</div>'
+    +'<div class="msg" style="margin:0">A imagem e a legenda exibidas ao final dos resumos podem ser trocadas nas constantes <b>IMG_RESUMO_URL</b> / <b>IMG_RESUMO_TITULO</b> / <b>IMG_RESUMO_LINK</b>, no início do JavaScript deste arquivo.</div>'
+    +'</div>';
 
   document.querySelectorAll('#setTheme .seg-btn').forEach(b=>b.onclick=()=>{state.set.theme=b.dataset.theme;save();applyTheme();renderSettings();});
   document.querySelectorAll('.pal-dot').forEach(b=>b.onclick=()=>{state.set.pal=b.dataset.pal;save();applyPalette();renderSettings();SFX.tap();});
@@ -1842,6 +1894,7 @@ function renderSettings(){
   $('setExport').onclick=exportData;
   $('setImport').onclick=()=>$('setFile').click();
   $('setFile').onchange=e=>{const f=e.target.files[0];if(f)importData(f);e.target.value='';};
+  PWA.bindCard();
   $('setClearSims').onclick=async()=>{if(await mConfirm({title:'Apagar respostas dos simulados?',body:'Todas as respostas, bandeiras, tempos e histórico de provas serão apagados. Revisão, favoritas, notas e conquistas são mantidas.',ok:'Apagar',danger:true})){state.ans={};state.flags={};state.times={};state.fins={};state.history=[];save();toast('Respostas dos simulados apagadas.','trash');renderSettings();}};
   $('setClearRev').onclick=async()=>{if(await mConfirm({title:'Apagar estatísticas de revisão?',body:'Zera o histórico de acertos e erros das sessões de revisão e treino.',ok:'Apagar',danger:true})){state.rs={};save();toast('Estatísticas de revisão apagadas.','trash');renderSettings();}};
   $('setClearFav').onclick=async()=>{if(await mConfirm({title:'Apagar favoritas e notas?',body:'Remove todas as questões favoritas e as anotações pessoais.',ok:'Apagar',danger:true})){state.fav={};state.notes={};save();toast('Favoritas e notas apagadas.','trash');renderSettings();}};
@@ -2615,7 +2668,6 @@ $('navFinish').onclick=()=>{hideNav();finalizeExam();};
 /* ============ ATALHOS DE TECLADO ============ */
 document.addEventListener('keydown',e=>{
   if(e.defaultPrevented)return;
-  if(e.key==='Escape'&&$('drawer').classList.contains('open')){hideDrawer();e.stopPropagation();e.preventDefault();return;}
   if(document.querySelector('#dlgHost .overlay'))return;
   if(!$('navOverlay').classList.contains('hidden')){if(e.key==='Escape')hideNav();return;}
   if(!$('obHost').classList.contains('hidden'))return;
@@ -2744,6 +2796,7 @@ buildChrome();
 applyPalette();
 applyFont();
 applyTheme();
+PWA.init();
 goScreen('home');
 checkAch();
 if(state.ob&&state.lastVer!==APP_VER){state.lastVer=APP_VER;save();} /* atualização silenciosa: sem pop-up */
