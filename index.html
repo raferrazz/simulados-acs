@@ -12,7 +12,6 @@
 <link rel="icon" href="favicon.ico" sizes="48x48">
 <link rel="icon" type="image/png" sizes="32x32" href="favicon-32x32.png">
 <link rel="icon" type="image/png" sizes="16x16" href="favicon-16x16.png">
-<link rel="icon" type="image/svg+xml" sizes="any" href="data:image/svg+xml,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20viewBox%3D%220%200%20100%20100%22%3E%3Cdefs%3E%3ClinearGradient%20id%3D%22g%22%20x1%3D%220%22%20y1%3D%220%22%20x2%3D%221%22%20y2%3D%221%22%3E%3Cstop%20offset%3D%220%22%20stop-color%3D%22%236750A4%22%2F%3E%3Cstop%20offset%3D%221%22%20stop-color%3D%22%234F378B%22%2F%3E%3C%2FlinearGradient%3E%3C%2Fdefs%3E%3Crect%20width%3D%22100%22%20height%3D%22100%22%20rx%3D%2223.5%22%20fill%3D%22url%28%23g%29%22%2F%3E%3Ccircle%20cx%3D%2276%22%20cy%3D%2220%22%20r%3D%2240%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.10%22%2F%3E%3Ccircle%20cx%3D%2216%22%20cy%3D%2286%22%20r%3D%2222%22%20fill%3D%22%23ffffff%22%20opacity%3D%220.06%22%2F%3E%3Ctext%20x%3D%2250%22%20y%3D%2250%22%20dy%3D%22.35em%22%20text-anchor%3D%22middle%22%20font-family%3D%22Roboto%2CArial%2CHelvetica%2Csans-serif%22%20font-weight%3D%22800%22%20font-size%3D%2230%22%20fill%3D%22%23ffffff%22%3EACS%3C%2Ftext%3E%3C%2Fsvg%3E">
 <link rel="apple-touch-icon" sizes="180x180" href="apple-touch-icon.png">
 <meta name="description" content="Simulados IBGE — Agente Censitário Supervisor (ACS), banca IBFC: 6 provas de 60 questões com correção comentada, revisão inteligente, flashcards e estatísticas.">
 <title>Simulados IBGE — ACS (IBFC)</title>
@@ -1912,11 +1911,6 @@ function renderSettings(){
     +'<div class="setrow"><div class="sr-txt"><b>Resetar tudo</b><small>Volta o aplicativo ao estado inicial (a aparência é mantida)</small></div><button class="btn btn-danger btn-sm" id="setResetAll">'+icon('trash',16)+' Apagar tudo</button></div>'
     +'</div>'
     +'<div class="card" style="margin-bottom:18px"><h3>'+icon('install',18)+' Criar aplicativo</h3><div id="pwaBody">'+PWA.cardHTML()+'</div></div>'
-    +'<div class="card"><h3>'+icon('info',18)+' Sobre</h3>'
-    +'<div class="msg" style="margin:0 0 10px">Simulados IBGE — Agente Censitário Supervisor (ACS) • Banca IBFC • Censo Agropecuário, Florestal e Aquícola.</div>'
-    +'<div class="msg" style="margin:0 0 10px">Versão '+APP_VER+' • '+N_SIMS+' simulados × 60 questões ('+N_TOTAL+' no total: 15 Português • 10 Raciocínio Lógico • 20 Administração • 15 Técnicas por caderno) • prova de 4 horas.</div>'
-    +'<div class="msg" style="margin:0">A imagem e a legenda exibidas ao final dos resumos podem ser trocadas nas constantes <b>IMG_RESUMO_URL</b> / <b>IMG_RESUMO_TITULO</b> / <b>IMG_RESUMO_LINK</b>, no início do JavaScript deste arquivo.</div>'
-    +'</div>';
 
   document.querySelectorAll('#setTheme .seg-btn').forEach(b=>b.onclick=()=>{state.set.theme=b.dataset.theme;save();applyTheme();renderSettings();});
   document.querySelectorAll('.pal-dot').forEach(b=>b.onclick=()=>{state.set.pal=b.dataset.pal;save();applyPalette();renderSettings();SFX.tap();});
